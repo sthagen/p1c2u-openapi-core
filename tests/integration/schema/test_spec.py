@@ -69,7 +69,7 @@ class TestPetstore:
             for variable_name, variable in variables.items():
                 variable_spec = server_spec["variables"][variable_name]
                 assert variable["default"] == variable_spec["default"]
-                assert variable["enum"] == variable_spec.get("enum")
+                assert variable.getkey("enum") == variable_spec.get("enum")
 
         paths = schema_path / "paths"
         for path_name, path in paths.items():
@@ -108,7 +108,7 @@ class TestPetstore:
                 operation_spec = path_spec[http_method]
 
                 assert operation["operationId"] is not None
-                assert operation["tags"] == operation_spec["tags"]
+                assert operation.getkey("tags") == operation_spec["tags"]
                 assert operation["summary"] == operation_spec.get("summary")
                 assert operation.getkey("description") == operation_spec.get(
                     "description"
@@ -323,7 +323,7 @@ class TestWebhook:
 
         webhooks = schema_path / "webhooks"
         webhooks_spec = spec_dict["webhooks"]
-        assert webhooks["newPet"] == webhooks_spec["newPet"]
+        assert webhooks.getkey("newPet") == webhooks_spec["newPet"]
 
         components = schema_path.get("components")
         if not components:
