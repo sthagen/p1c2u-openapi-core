@@ -1,4 +1,4 @@
-name: CI / Integrations
+name: CI / Integrations / Tests
 
 on:
   push:
@@ -14,8 +14,8 @@ permissions:
   id-token: write
 
 jobs:
-  integration:
-    name: "Integration / ${{ matrix.target.label }} / py${{ matrix.python-version }}"
+  integration_matrix:
+    name: "${{ matrix.target.label }} / py${{ matrix.python-version }}"
     runs-on: ubuntu-latest
     strategy:
       matrix:
