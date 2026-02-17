@@ -7,8 +7,6 @@ from jsonschema_path import SchemaPath
 from openapi_spec_validator.readers import read_from_filename
 from yaml import safe_load
 
-from openapi_core import Spec
-
 
 def content_from_file(spec_file):
     directory = path.abspath(path.dirname(__file__))
@@ -25,16 +23,6 @@ def schema_path_from_url(base_uri):
     content = request.urlopen(base_uri)
     spec_dict = safe_load(content)
     return SchemaPath.from_dict(spec_dict, base_uri=base_uri)
-
-
-def spec_from_file(spec_file):
-    schema_path = schema_path_from_file(spec_file)
-    return Spec(schema_path)
-
-
-def spec_from_url(base_uri):
-    schema_path = schema_path_from_url(base_uri)
-    return Spec(schema_path)
 
 
 @pytest.fixture(scope="session")
@@ -67,14 +55,6 @@ def schema_path_factory():
     return Factory(
         from_file=schema_path_from_file,
         from_url=schema_path_from_url,
-    )
-
-
-@pytest.fixture(scope="session")
-def spec_factory(schema_path_factory):
-    return Factory(
-        from_file=spec_from_file,
-        from_url=spec_from_url,
     )
 
 

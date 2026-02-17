@@ -14,7 +14,6 @@ from openapi_core.shortcuts import validate_request
 from openapi_core.shortcuts import validate_response
 from openapi_core.shortcuts import validate_webhook_request
 from openapi_core.shortcuts import validate_webhook_response
-from openapi_core.spec.paths import Spec
 from openapi_core.unmarshalling.request import V3RequestUnmarshaller
 from openapi_core.unmarshalling.request import V3WebhookRequestUnmarshaller
 from openapi_core.unmarshalling.request import V30RequestUnmarshaller
@@ -45,7 +44,6 @@ __license__ = "BSD 3-Clause License"
 __all__ = [
     "OpenAPI",
     "Config",
-    "Spec",
     "unmarshal_request",
     "unmarshal_response",
     "unmarshal_apicall_request",

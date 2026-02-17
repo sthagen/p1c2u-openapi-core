@@ -27,7 +27,7 @@ class ModelFactory(DictFactory):
         schema: SchemaPath,
         fields: Iterable[Field],
     ) -> Type[Any]:
-        name = schema.getkey("x-model")
+        name = (schema / "x-model").read_str(None)
         if name is None:
             return super().create(schema, fields)
 
@@ -40,7 +40,7 @@ class ModelPathFactory(ModelFactory):
         schema: SchemaPath,
         fields: Iterable[Field],
     ) -> Any:
-        model_class_path = schema.getkey("x-model-path")
+        model_class_path = (schema / "x-model-path").read_str(None)
         if model_class_path is None:
             return super().create(schema, fields)
 

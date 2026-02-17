@@ -22,7 +22,7 @@ class TestOpenAPIFromPath:
         result = OpenAPI.from_path(path)
 
         assert type(result) == OpenAPI
-        assert result.spec.contents() == spec_dict
+        assert result.spec.read_value() == spec_dict
 
 
 class TestOpenAPIFromFilePath:
@@ -39,7 +39,7 @@ class TestOpenAPIFromFilePath:
         result = OpenAPI.from_file_path(file_path)
 
         assert type(result) == OpenAPI
-        assert result.spec.contents() == spec_dict
+        assert result.spec.read_value() == spec_dict
 
 
 class TestOpenAPIFromFile:
@@ -57,7 +57,7 @@ class TestOpenAPIFromFile:
             result = OpenAPI.from_file(f)
 
         assert type(result) == OpenAPI
-        assert result.spec.contents() == spec_dict
+        assert result.spec.read_value() == spec_dict
 
 
 class TestOpenAPIFromDict:
@@ -74,4 +74,4 @@ class TestOpenAPIFromDict:
         result = OpenAPI.from_dict(spec_dict, config=config)
 
         assert type(result) == OpenAPI
-        assert result.spec.contents() == spec_dict
+        assert result.spec.read_value() == spec_dict

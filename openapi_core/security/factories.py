@@ -19,6 +19,6 @@ class SecurityProviderFactory:
     }
 
     def create(self, scheme: SchemaPath) -> Any:
-        scheme_type = scheme["type"]
+        scheme_type = (scheme / "type").read_str()
         provider_class = self.PROVIDERS[scheme_type]
         return provider_class(scheme)

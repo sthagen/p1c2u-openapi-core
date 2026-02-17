@@ -22,11 +22,11 @@ def get_default_content_type(
     if prop_schema is None:
         return "text/plain"
 
-    prop_type = prop_schema.getkey("type")
+    prop_type = (prop_schema / "type").read_str(None)
     if prop_type is None:
         return "text/plain" if encoding else "application/octet-stream"
 
-    prop_format = prop_schema.getkey("format")
+    prop_format = (prop_schema / "format").read_str(None)
     if prop_type == "string" and prop_format in ["binary", "base64"]:
         return "application/octet-stream"
 

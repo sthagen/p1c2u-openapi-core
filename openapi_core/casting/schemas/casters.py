@@ -132,9 +132,7 @@ class ObjectCaster(PrimitiveCaster):
         if schema_only:
             return value
 
-        additional_properties = self.schema.getkey(
-            "additionalProperties", True
-        )
+        additional_properties = self.schema.get("additionalProperties", True)
         if additional_properties is not False:
             # free-form object
             if additional_properties is True:
@@ -199,11 +197,12 @@ class SchemaCaster:
 
     def cast(self, value: Any) -> Any:
         # skip casting for nullable in OpenAPI 3.0
-        if value is None and self.schema.getkey("nullable", False):
+        if value is None and (self.schema / "nullable").read_bool(
+            default=False
+        ):
             return value
 
-        schema_type = self.schema.getkey("type")
-
+        schema_type = (self.schema / "type").read_str(None)
         type_caster = self.get_type_caster(schema_type)
 
         if value is None:
@@ -211,8 +210,8 @@ class SchemaCaster:
 
         try:
             return type_caster(value)
-        except (ValueError, TypeError):
-            raise CastError(value, schema_type)
+        except (ValueError, TypeError) as exc:
+            raise CastError(value, schema_type) from exc
 
     def get_type_caster(
         self,

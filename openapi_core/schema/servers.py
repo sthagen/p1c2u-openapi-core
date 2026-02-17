@@ -14,7 +14,7 @@ def get_server_default_variables(server: SchemaPath) -> Dict[str, Any]:
 
     defaults = {}
     variables = server / "variables"
-    for name, variable in list(variables.items()):
+    for name, variable in list(variables.str_items()):
         defaults[name] = variable["default"]
     return defaults
 

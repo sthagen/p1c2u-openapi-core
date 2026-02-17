@@ -69,13 +69,19 @@ class TestPetstore:
             for variable_name, variable in variables.items():
                 variable_spec = server_spec["variables"][variable_name]
                 assert variable["default"] == variable_spec["default"]
-                assert variable["enum"] == variable_spec.get("enum")
+                assert (variable / "enum").read_value() == variable_spec.get(
+                    "enum"
+                )
 
         paths = schema_path / "paths"
         for path_name, path in paths.items():
             path_spec = spec_dict["paths"][path_name]
-            assert path.getkey("summary") == path_spec.get("summary")
-            assert path.getkey("description") == path_spec.get("description")
+            assert (path / "summary").read_str(None) == path_spec.get(
+                "summary"
+            )
+            assert (path / "description").read_str(None) == path_spec.get(
+                "description"
+            )
 
             servers = path.get("servers", [])
             servers_spec = path_spec.get("servers", [])
@@ -89,7 +95,9 @@ class TestPetstore:
                 for variable_name, variable in variables.items():
                     variable_spec = server_spec["variables"][variable_name]
                     assert variable["default"] == variable_spec["default"]
-                    assert variable.getkey("enum") == variable_spec.get("enum")
+                    assert (
+                        variable / "enum"
+                    ).read_value() == variable_spec.get("enum")
 
             operations = [
                 "get",
@@ -108,20 +116,22 @@ class TestPetstore:
                 operation_spec = path_spec[http_method]
 
                 assert operation["operationId"] is not None
-                assert operation["tags"] == operation_spec["tags"]
+                assert (operation / "tags").read_str_or_list(
+                    None
+                ) == operation_spec["tags"]
                 assert operation["summary"] == operation_spec.get("summary")
-                assert operation.getkey("description") == operation_spec.get(
-                    "description"
-                )
+                assert (operation / "description").read_str(
+                    None
+                ) == operation_spec.get("description")
 
                 ext_docs = operation.get("externalDocs")
                 ext_docs_spec = operation_spec.get("externalDocs")
                 assert bool(ext_docs_spec) == bool(ext_docs)
                 if ext_docs_spec:
                     assert ext_docs["url"] == ext_docs_spec["url"]
-                    assert ext_docs.getkey("description") == ext_docs_spec.get(
-                        "description"
-                    )
+                    assert (ext_docs / "description").read_str(
+                        None
+                    ) == ext_docs_spec.get("description")
 
                 servers = operation.get("servers", [])
                 servers_spec = operation_spec.get("servers", [])
@@ -137,9 +147,9 @@ class TestPetstore:
                     for variable_name, variable in variables.items():
                         variable_spec = server_spec["variables"][variable_name]
                         assert variable["default"] == variable_spec["default"]
-                        assert variable.getkey("enum") == variable_spec.get(
-                            "enum"
-                        )
+                        assert (
+                            variable / "enum"
+                        ).read_value() == variable_spec.get("enum")
 
                 security = operation.get("security", [])
                 security_spec = operation_spec.get("security")
@@ -163,7 +173,9 @@ class TestPetstore:
 
                     description_spec = response_spec["description"]
 
-                    assert response.getkey("description") == description_spec
+                    assert (response / "description").read_str(
+                        None
+                    ) == description_spec
 
                     headers = response.get("headers", {})
                     for parameter_name, parameter in headers.items():
@@ -182,12 +194,12 @@ class TestPetstore:
                             continue
 
                         assert schema["type"] == schema_spec["type"]
-                        assert schema.getkey("format") == schema_spec.get(
-                            "format"
-                        )
-                        assert schema.getkey("required") == schema_spec.get(
-                            "required"
-                        )
+                        assert (schema / "format").read_str(
+                            None
+                        ) == schema_spec.get("format")
+                        assert (schema / "required").read_str(
+                            None
+                        ) == schema_spec.get("required")
 
                         content = parameter.get("content", {})
                         content_spec = parameter_spec.get("content")
@@ -210,12 +222,12 @@ class TestPetstore:
                                 continue
 
                             assert schema["type"] == schema_spec["type"]
-                            assert schema.getkey("format") == schema_spec.get(
-                                "format"
-                            )
-                            assert schema.getkey(
-                                "required"
-                            ) == schema_spec.get("required")
+                            assert (schema / "format").read_str(
+                                None
+                            ) == schema_spec.get("format")
+                            assert (
+                                schema / "required"
+                            ).read_bool() == schema_spec.get("required")
 
                     content_spec = response_spec.get("content")
 
@@ -227,7 +239,9 @@ class TestPetstore:
                         content_spec = response_spec["content"][mimetype]
 
                         example_spec = content_spec.get("example")
-                        assert media_type.getkey("example") == example_spec
+                        assert (media_type / "example").read_str_or_list(
+                            None
+                        ) == example_spec
 
                         schema = media_type.get("schema")
                         schema_spec = content_spec.get("schema")
@@ -241,9 +255,9 @@ class TestPetstore:
                             continue
 
                         assert schema["type"] == schema_spec["type"]
-                        assert schema.getkey("required") == schema_spec.get(
-                            "required"
-                        )
+                        assert (schema / "required").read_bool(
+                            None
+                        ) == schema_spec.get("required")
 
                 request_body = operation.get("requestBody")
                 request_body_spec = operation_spec.get("requestBody")
@@ -253,7 +267,7 @@ class TestPetstore:
                     continue
 
                 assert bool(
-                    request_body.getkey("required")
+                    (request_body / "required").read_bool()
                 ) == request_body_spec.get("required")
 
                 content = request_body / "content"
@@ -272,10 +286,12 @@ class TestPetstore:
                     assert bool(schema_spec) == bool(schema)
 
                     assert schema["type"] == schema_spec["type"]
-                    assert schema.getkey("format") == schema_spec.get("format")
-                    assert schema.getkey("required") == schema_spec.get(
-                        "required"
-                    )
+                    assert (schema / "format").read_str(
+                        None
+                    ) == schema_spec.get("format")
+                    assert (schema / "required").read_bool(
+                        None
+                    ) == schema_spec.get("required")
 
         components = schema_path.get("components")
         if not components:
@@ -284,8 +300,12 @@ class TestPetstore:
         schemas = components.get("schemas", {})
         for schema_name, schema in schemas.items():
             schema_spec = spec_dict["components"]["schemas"][schema_name]
-            assert schema.getkey("readOnly") == schema_spec.get("readOnly")
-            assert schema.getkey("writeOnly") == schema_spec.get("writeOnly")
+            assert (schema / "readOnly").read_bool(None) == schema_spec.get(
+                "readOnly"
+            )
+            assert (schema / "writeOnly").read_bool(None) == schema_spec.get(
+                "writeOnly"
+            )
 
 
 class TestWebhook:
@@ -323,7 +343,7 @@ class TestWebhook:
 
         webhooks = schema_path / "webhooks"
         webhooks_spec = spec_dict["webhooks"]
-        assert webhooks["newPet"] == webhooks_spec["newPet"]
+        assert (webhooks / "newPet").read_value() == webhooks_spec["newPet"]
 
         components = schema_path.get("components")
         if not components:

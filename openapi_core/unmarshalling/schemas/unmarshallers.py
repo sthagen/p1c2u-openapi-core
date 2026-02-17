@@ -109,9 +109,7 @@ class ObjectUnmarshaller(PrimitiveUnmarshaller):
         if schema_only:
             return properties
 
-        additional_properties = self.schema.getkey(
-            "additionalProperties", True
-        )
+        additional_properties = self.schema.get("additionalProperties", True)
         if additional_properties is not False:
             # free-form object
             if additional_properties is True:
@@ -244,10 +242,12 @@ class SchemaUnmarshaller:
         self.schema_validator.validate(value)
 
         # skip unmarshalling for nullable in OpenAPI 3.0
-        if value is None and self.schema.getkey("nullable", False):
+        if value is None and (self.schema / "nullable").read_bool(
+            default=False
+        ):
             return value
 
-        schema_type = self.schema.getkey("type")
+        schema_type = (self.schema / "type").read_str_or_list(None)
         type_unmarshaller = self.get_type_unmarshaller(schema_type)
         typed = type_unmarshaller(value)
         # skip finding format for None
@@ -307,5 +307,5 @@ class SchemaUnmarshaller:
             if primitive_type != "string":
                 continue
             if "format" in schema:
-                return str(schema.getkey("format"))
+                return (schema / "format").read_str()
         return None

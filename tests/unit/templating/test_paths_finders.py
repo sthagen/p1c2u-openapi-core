@@ -171,9 +171,7 @@ class BaseTestServerNotFound:
     @pytest.fixture
     def servers(self):
         return [
-            SchemaPath.from_dict(
-                {"url": "http://petstore.swagger.io/resource"}
-            )
+            {"url": "http://petstore.swagger.io/resource"},
         ]
 
     def test_raises(self, finder):

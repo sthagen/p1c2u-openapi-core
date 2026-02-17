@@ -14,7 +14,7 @@ class InvalidSchemaValue(ValidateError):
     """Value not valid for schema"""
 
     value: str
-    type: str
+    type: str | list[str]
     schema_errors: Iterable[Exception] = field(default_factory=list)
 
     def __str__(self) -> str:

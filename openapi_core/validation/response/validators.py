@@ -147,11 +147,9 @@ class BaseResponseValidator(BaseValidator):
         if "headers" not in operation_response:
             return {}
 
-        response_headers = operation_response / "headers"
-
         errors: List[OpenAPIError] = []
         validated: Dict[str, Any] = {}
-        for name, header in list(response_headers.items()):
+        for name, header in (operation_response / "headers").str_items():
             # ignore Content-Type header
             if name.lower() == "content-type":
                 continue
@@ -174,7 +172,7 @@ class BaseResponseValidator(BaseValidator):
     def _get_header(
         self, headers: Mapping[str, Any], name: str, header: SchemaPath
     ) -> Any:
-        deprecated = header.getkey("deprecated", False)
+        deprecated = (header / "deprecated").read_bool(default=False)
         if deprecated:
             warnings.warn(
                 f"{name} header is deprecated",
@@ -186,7 +184,7 @@ class BaseResponseValidator(BaseValidator):
                 header, headers, name=name
             )
         except KeyError:
-            required = header.getkey("required", False)
+            required = (header / "required").read_bool(default=False)
             if required:
                 raise MissingRequiredHeader(name)
             raise MissingHeader(name)

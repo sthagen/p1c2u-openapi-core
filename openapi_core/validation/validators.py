@@ -157,7 +157,7 @@ class BaseValidator:
         location: Mapping[str, Any],
         name: Optional[str] = None,
     ) -> Any:
-        name = name or param_or_header["name"]
+        name = name or (param_or_header / "name").read_str()
         style, explode = get_style_and_explode(param_or_header)
         schema = param_or_header / "schema"
         deserializer = self.style_deserializers_factory.create(
@@ -202,7 +202,9 @@ class BaseValidator:
         location: Mapping[str, Any],
         name: Optional[str] = None,
     ) -> Tuple[Any, SchemaPath]:
-        allow_empty_values = param_or_header.getkey("allowEmptyValue")
+        allow_empty_values = (param_or_header / "allowEmptyValue").read_bool(
+            default=None
+        )
         if allow_empty_values:
             warnings.warn(
                 "Use of allowEmptyValue property is deprecated",
@@ -225,13 +227,13 @@ class BaseValidator:
             )
         if allow_empty_values is None or not allow_empty_values:
             # if "in" not defined then it's a Header
-            location_name = param_or_header.getkey("in", "header")
+            location_name = (param_or_header / "in").read_str("header")
             if (
                 location_name == "query"
                 and deserialised == ""
                 and not allow_empty_values
             ):
-                param_or_header_name = param_or_header["name"]
+                param_or_header_name = (param_or_header / "name").read_str()
                 raise EmptyQueryParameterValue(param_or_header_name)
         return deserialised, schema
 
@@ -283,7 +285,7 @@ class BaseValidator:
         location: Mapping[str, Any],
         name: Optional[str] = None,
     ) -> Any:
-        name = name or param_or_header["name"]
+        name = name or (param_or_header / "name").read_str()
         return location[name]
 
 

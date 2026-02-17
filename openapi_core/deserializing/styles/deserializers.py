@@ -25,7 +25,7 @@ class StyleDeserializer:
         self.explode = explode
         self.name = name
         self.schema = schema
-        self.schema_type = schema.getkey("type", "")
+        self.schema_type = (schema / "type").read_str("")
         self.caster = caster
         self.deserializer_callable = deserializer_callable
 

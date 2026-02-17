@@ -11,7 +11,7 @@ def get_style(
         assert isinstance(param_or_header["style"], str)
         return param_or_header["style"]
 
-    location = param_or_header.getkey("in", default_location)
+    location = (param_or_header / "in").read_str(default=default_location)
 
     # determine default
     return "simple" if location in ["path", "header"] else "form"

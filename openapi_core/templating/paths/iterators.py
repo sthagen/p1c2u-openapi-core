@@ -27,7 +27,7 @@ class SimplePathsIterator:
         paths = spec / self.paths_part
         if not paths.exists():
             raise PathsNotFound(paths.as_uri())
-        for path_name, path in list(paths.items()):
+        for path_name, path in list(paths.str_items()):
             if name == path_name:
                 path_result = TemplateResult(path_name, {})
                 yield Path(path, path_result)
@@ -44,7 +44,7 @@ class TemplatePathsIterator:
         if not paths.exists():
             raise PathsNotFound(paths.as_uri())
         template_paths: List[Path] = []
-        for path_pattern, path in list(paths.items()):
+        for path_pattern, path in list(paths.str_items()):
             # simple path.
             # Return right away since it is always the most concrete
             if name.endswith(path_pattern):

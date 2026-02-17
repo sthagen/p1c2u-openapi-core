@@ -153,16 +153,20 @@ class BaseRequestValidator(BaseValidator):
         operation: SchemaPath,
         path: SchemaPath,
     ) -> Parameters:
-        operation_params = operation.get("parameters", [])
-        path_params = path.get("parameters", [])
+        operation_params: SchemaPath = operation.get(
+            "parameters", SchemaPath.from_dict({})
+        )
+        path_params: SchemaPath = path.get(
+            "parameters", SchemaPath.from_dict({})
+        )
 
         errors = []
         seen = set()
         validated = Parameters()
         params_iter = chainiters(operation_params, path_params)
         for param in params_iter:
-            param_name = param["name"]
-            param_location = param["in"]
+            param_name = (param / "name").read_str()
+            param_location = (param / "in").read_str()
             if (param_name, param_location) in seen:
                 # skip parameter already seen
                 # e.g. overriden path item paremeter on operation
@@ -193,22 +197,21 @@ class BaseRequestValidator(BaseValidator):
     def _get_parameter(
         self, parameters: RequestParameters, param: SchemaPath
     ) -> Any:
-        name = param["name"]
-        deprecated = param.getkey("deprecated", False)
+        name = (param / "name").read_str()
+        deprecated = (param / "deprecated").read_bool(default=False)
         if deprecated:
             warnings.warn(
                 f"{name} parameter is deprecated",
                 DeprecationWarning,
             )
 
-        param_location = param["in"]
+        param_location = (param / "in").read_str()
         location = parameters[param_location]
 
         try:
             value, _ = self._get_param_or_header_and_schema(param, location)
         except KeyError:
-            required = param.getkey("required", False)
-            if required:
+            if (param / "required").read_bool(default=False):
                 raise MissingRequiredParameter(name, param_location)
             raise MissingParameter(name, param_location)
         else:
@@ -230,7 +233,7 @@ class BaseRequestValidator(BaseValidator):
         schemes = []
         for security_requirement in security:
             try:
-                scheme_names = list(security_requirement.keys())
+                scheme_names = list(security_requirement.str_keys())
                 schemes.append(scheme_names)
                 return {
                     scheme_name: self._get_security_value(
@@ -272,7 +275,7 @@ class BaseRequestValidator(BaseValidator):
         self, body: Optional[bytes], request_body: SchemaPath
     ) -> bytes:
         if not body:
-            if request_body.getkey("required", False):
+            if (request_body / "required").read_bool(default=False):
                 raise MissingRequiredRequestBody
             raise MissingRequestBody
         return body

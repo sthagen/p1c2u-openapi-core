@@ -36,7 +36,7 @@ class SchemaValidator:
         errors_iter = self.validator.iter_errors(value)
         errors = tuple(errors_iter)
         if errors:
-            schema_type = self.schema.getkey("type", "any")
+            schema_type = (self.schema / "type").read_str_or_list("any")
             raise InvalidSchemaValue(value, schema_type, schema_errors=errors)
 
     def evolve(self, schema: SchemaPath) -> "SchemaValidator":
@@ -67,7 +67,7 @@ class SchemaValidator:
     def get_type_validator_callable(
         self, type_override: Optional[str] = None
     ) -> FormatValidator:
-        schema_type = type_override or self.schema.getkey("type")
+        schema_type = type_override or (self.schema / "type").read_str(None)
         if schema_type in self.validator.TYPE_CHECKER._type_checkers:
             return partial(
                 self.validator.TYPE_CHECKER.is_type, type=schema_type
@@ -77,7 +77,7 @@ class SchemaValidator:
 
     @cached_property
     def format_validator_callable(self) -> FormatValidator:
-        schema_format = self.schema.getkey("format")
+        schema_format = (self.schema / "format").read_str(None)
         if schema_format in self.validator.format_checker.checkers:
             return partial(
                 self.validator.format_checker.check, format=schema_format
@@ -86,7 +86,7 @@ class SchemaValidator:
         return lambda x: True
 
     def get_primitive_type(self, value: Any) -> Optional[str]:
-        schema_types = self.schema.getkey("type")
+        schema_types = (self.schema / "type").read_str_or_list(None)
         if isinstance(schema_types, str):
             return schema_types
         if schema_types is None:
