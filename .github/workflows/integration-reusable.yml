@@ -30,7 +30,7 @@ jobs:
 
       - name: Get full Python version
         id: full-python-version
-        run: echo "version=$(python -c \"import sys; print('-'.join(str(v) for v in sys.version_info))\")" >> "$GITHUB_OUTPUT"
+        run: python -c "import sys; print(f\"version={'-'.join(str(v) for v in sys.version_info)}\")" >> "$GITHUB_OUTPUT"
 
       - name: Set up poetry
         uses: Gr1N/setup-poetry@v9
