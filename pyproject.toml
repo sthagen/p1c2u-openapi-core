@@ -156,6 +156,7 @@ regex = '''
   (?P<minor>\d+)
   \.
   (?P<patch>\d+)
+  (?P<prerelease>[a-z]+\d+)?
   '''
 
 [tool.tbump.git]
