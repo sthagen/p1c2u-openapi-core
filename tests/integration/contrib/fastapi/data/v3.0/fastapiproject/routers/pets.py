@@ -11,15 +11,13 @@ try:
 except ImportError:
     from typing_extensions import Annotated
 
-OPENID_LOGO = b64decode(
-    """
+OPENID_LOGO = b64decode("""
 R0lGODlhEAAQAMQAAO3t7eHh4srKyvz8/P5pDP9rENLS0v/28P/17tXV1dHEvPDw8M3Nzfn5+d3d
 3f5jA97Syvnv6MfLzcfHx/1mCPx4Kc/S1Pf189C+tP+xgv/k1N3OxfHy9NLV1/39/f///yH5BAAA
 AAAALAAAAAAQABAAAAVq4CeOZGme6KhlSDoexdO6H0IUR+otwUYRkMDCUwIYJhLFTyGZJACAwQcg
 EAQ4kVuEE2AIGAOPQQAQwXCfS8KQGAwMjIYIUSi03B7iJ+AcnmclHg4TAh0QDzIpCw4WGBUZeikD
 Fzk0lpcjIQA7
-"""
-)
+""")
 
 
 router = APIRouter(
