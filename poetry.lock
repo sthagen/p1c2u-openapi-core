@@ -1585,14 +1585,14 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "jsonschema-path"
-version = "0.4.0b6"
+version = "0.4.0b8"
 description = "JSONSchema Spec with object-oriented paths"
 optional = false
 python-versions = "<4.0.0,>=3.9.0"
 groups = ["main"]
 files = [
-    {file = "jsonschema_path-0.4.0b6-py3-none-any.whl", hash = "sha256:6b988750daa9c078f41c828c4f780399166012facce60e6245c2620d8b6fbf18"},
-    {file = "jsonschema_path-0.4.0b6.tar.gz", hash = "sha256:e1b88f65545604d8e81221ba88148d85aafb99bd916bad5838a5614f914bd886"},
+    {file = "jsonschema_path-0.4.0b8-py3-none-any.whl", hash = "sha256:ba4592a4fe6f87c0e7eb4e880037dfdf82e6f5919e273ad98facdfac11fbaee2"},
+    {file = "jsonschema_path-0.4.0b8.tar.gz", hash = "sha256:fd7919687dd6afdb82005a7198d1a7b3e18a1e275ed351b160ba6a86b4054ef7"},
 ]
 
 [package.dependencies]
@@ -2379,19 +2379,19 @@ rfc3339-validator = "*"
 
 [[package]]
 name = "openapi-spec-validator"
-version = "0.8.0b2"
+version = "0.8.0b3"
 description = "OpenAPI 2.0 (aka Swagger) and OpenAPI 3 spec validator"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openapi_spec_validator-0.8.0b2-py3-none-any.whl", hash = "sha256:6c5e562a9d90b0cb7ddb12b3560bc2f9b311f3ef3a221008395558085482c7d3"},
-    {file = "openapi_spec_validator-0.8.0b2.tar.gz", hash = "sha256:3886c3842f3b877b8f18eb6a0a10df6f41a89bc6c6e8df0121e6619c6b9cd7f0"},
+    {file = "openapi_spec_validator-0.8.0b3-py3-none-any.whl", hash = "sha256:75e0ad2c14eeb70d4e8d39cf87bc93450742dd9ca61226923468ec8e392cfac8"},
+    {file = "openapi_spec_validator-0.8.0b3.tar.gz", hash = "sha256:b8e6921028fc5848b1e717639a131b1315445a0fbf34c44f1d8106d5d65ed08b"},
 ]
 
 [package.dependencies]
 jsonschema = ">=4.24.0,<4.25.0"
-jsonschema-path = ">=0.4.0b2,<0.5.0"
+jsonschema-path = ">=0.4.0b8,<0.5.0"
 lazy-object-proxy = ">=1.7.1,<2.0"
 openapi-schema-validator = ">=0.6.1,<0.7.0"
 
@@ -4056,4 +4056,4 @@ starlette = ["aioitertools", "starlette"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10.0"
-content-hash = "68cf60b7667ef482e24711e3f813b1b8b3fac5edc252d856a76882a7cdfeff69"
+content-hash = "aa13175fae1940246bab807b147919377082cb29baccc5ef8a7a5bbb4f949a3d"

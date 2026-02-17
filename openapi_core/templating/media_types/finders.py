@@ -32,11 +32,11 @@ class MediaTypeFinder:
 
         # range mime type
         if mime_type:
-            for key, value in self.content.items():
+            for key, value in self.content.str_items():
                 if fnmatch.fnmatch(mime_type, key):
                     return MediaType(key, parameters, value)
 
-        raise MediaTypeNotFound(mimetype, list(self.content.keys()))
+        raise MediaTypeNotFound(mimetype, list(self.content.str_keys()))
 
     def _parse_mimetype(self, mimetype: str) -> Tuple[str, Mapping[str, str]]:
         mimetype_parts = mimetype.split(";")

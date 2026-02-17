@@ -43,7 +43,7 @@ class SchemaUnmarshallersFactory:
         if schema is None:
             raise TypeError("Invalid schema")
 
-        if schema.getkey("deprecated", False):
+        if (schema / "deprecated").read_bool(default=False):
             warnings.warn("The schema is deprecated", DeprecationWarning)
 
         if extra_format_validators is None:
@@ -54,7 +54,7 @@ class SchemaUnmarshallersFactory:
             extra_format_validators=extra_format_validators,
         )
 
-        schema_format = schema.getkey("format")
+        schema_format = (schema / "format").read_str(None)
 
         formats_unmarshaller = FormatsUnmarshaller(
             format_unmarshallers or self.format_unmarshallers,

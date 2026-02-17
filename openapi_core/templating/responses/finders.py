@@ -17,6 +17,8 @@ class ResponseFinder:
             return self.responses / http_status_range
 
         if "default" not in self.responses:
-            raise ResponseNotFound(http_status, list(self.responses.keys()))
+            raise ResponseNotFound(
+                http_status, list(self.responses.str_keys())
+            )
 
         return self.responses / "default"

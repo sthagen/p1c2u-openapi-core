@@ -68,10 +68,10 @@ starlette = {version = ">=0.26.1,<0.50.0", optional = true}
 isodate = "*"
 more-itertools = "*"
 openapi-schema-validator = "^0.6.0"
-openapi-spec-validator = {version = "^0.8.0b2", allow-prereleases = true}
+openapi-spec-validator = {version = "^0.8.0b3", allow-prereleases = true}
 requests = {version = "*", optional = true}
 werkzeug = ">=2.1.0"
-jsonschema-path = {version = "^0.4.0b6", allow-prereleases = true}
+jsonschema-path = {version = "^0.4.0b8", allow-prereleases = true}
 jsonschema = "^4.23.0"
 multidict = {version = "^6.0.4", optional = true}
 aioitertools = {version = ">=0.11,<0.14", optional = true}
@@ -132,7 +132,6 @@ addopts = """
 asyncio_mode = "auto"
 filterwarnings = [
     "error",
-    "ignore:'contents' method is deprecated:DeprecationWarning",
     # falcon.media.handlers uses cgi to parse data
     "ignore:'cgi' is deprecated and slated for removal in Python 3.13:DeprecationWarning",
     "ignore:co_lnotab is deprecated, use co_lines instead:DeprecationWarning",

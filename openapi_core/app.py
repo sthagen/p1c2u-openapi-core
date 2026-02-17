@@ -305,7 +305,7 @@ class OpenAPI:
 
     def _get_version(self) -> SpecVersion:
         try:
-            return get_spec_version(self.spec.contents())
+            return get_spec_version(self.spec.read_value())
         # backward compatibility
         except OpenAPIVersionNotFound:
             raise SpecError("Spec schema version not detected")
@@ -320,7 +320,7 @@ class OpenAPI:
 
         try:
             validate(
-                self.spec.contents(),
+                self.spec.read_value(),
                 base_uri=self.config.spec_base_uri
                 or self.spec.accessor.resolver._base_uri,  # type: ignore[attr-defined]
                 cls=cls,

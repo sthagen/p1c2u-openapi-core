@@ -22,8 +22,8 @@ class UnsupportedProvider(BaseProvider):
 
 class ApiKeyProvider(BaseProvider):
     def __call__(self, parameters: RequestParameters) -> Any:
-        name = self.scheme["name"]
-        location = self.scheme["in"]
+        name = (self.scheme / "name").read_str()
+        location = (self.scheme / "in").read_str()
         source = getattr(parameters, location)
         if name not in source:
             raise SecurityProviderError("Missing api key parameter.")

@@ -237,7 +237,7 @@ class MediaTypeDeserializer:
             prop_schema,
             mimetype=prop_content_type,
         )
-        prop_schema_type = prop_schema.getkey("type", "")
+        prop_schema_type = (prop_schema / "type").read_str("")
         if (
             self.mimetype.startswith("multipart")
             and prop_schema_type == "array"

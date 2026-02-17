@@ -49,7 +49,9 @@ class ParameterValidationError(RequestValidationError):
 
     @classmethod
     def from_spec(cls, spec: SchemaPath) -> "ParameterValidationError":
-        return cls(spec["name"], spec["in"])
+        name = (spec / "name").read_str()
+        location = (spec / "in").read_str()
+        return cls(name, location)
 
     def __str__(self) -> str:
         return f"{self.location.title()} parameter error: {self.name}"
