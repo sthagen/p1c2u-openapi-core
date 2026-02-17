@@ -123,19 +123,15 @@ class OpenAPI:
         self,
         spec: Annotated[
             SchemaPath,
-            Doc(
-                """
+            Doc("""
                 OpenAPI specification schema path object.
-                """
-            ),
+                """),
         ],
         config: Annotated[
             Optional[Config],
-            Doc(
-                """
+            Doc("""
                 Configuration object for the OpenAPI application.
-                """
-            ),
+                """),
         ] = None,
     ):
         if not isinstance(spec, SchemaPath):
@@ -151,27 +147,21 @@ class OpenAPI:
         cls,
         data: Annotated[
             Schema,
-            Doc(
-                """
+            Doc("""
                 Dictionary representing the OpenAPI specification.
-                """
-            ),
+                """),
         ],
         config: Annotated[
             Optional[Config],
-            Doc(
-                """
+            Doc("""
                 Configuration object for the OpenAPI application.
-                """
-            ),
+                """),
         ] = None,
         base_uri: Annotated[
             str,
-            Doc(
-                """
+            Doc("""
                 Base URI for the OpenAPI specification.
-                """
-            ),
+                """),
         ] = "",
     ) -> "OpenAPI":
         """Creates an `OpenAPI` from a dictionary.
@@ -194,19 +184,15 @@ class OpenAPI:
         cls,
         path: Annotated[
             Path,
-            Doc(
-                """
+            Doc("""
                 Path object representing the OpenAPI specification file.
-                """
-            ),
+                """),
         ],
         config: Annotated[
             Optional[Config],
-            Doc(
-                """
+            Doc("""
                 Configuration object for the OpenAPI application.
-                """
-            ),
+                """),
         ] = None,
     ) -> "OpenAPI":
         """Creates an `OpenAPI` from a [Path object](https://docs.python.org/3/library/pathlib.html#pathlib.Path).
@@ -229,19 +215,15 @@ class OpenAPI:
         cls,
         file_path: Annotated[
             str,
-            Doc(
-                """
+            Doc("""
                 File path string representing the OpenAPI specification file.
-                """
-            ),
+                """),
         ],
         config: Annotated[
             Optional[Config],
-            Doc(
-                """
+            Doc("""
                 Configuration object for the OpenAPI application.
-                """
-            ),
+                """),
         ] = None,
     ) -> "OpenAPI":
         """Creates an `OpenAPI` from a file path string.
@@ -264,27 +246,21 @@ class OpenAPI:
         cls,
         fileobj: Annotated[
             SupportsRead,
-            Doc(
-                """
+            Doc("""
                 File object representing the OpenAPI specification file.
-                """
-            ),
+                """),
         ],
         config: Annotated[
             Optional[Config],
-            Doc(
-                """
+            Doc("""
                 Configuration object for the OpenAPI application.
-                """
-            ),
+                """),
         ] = None,
         base_uri: Annotated[
             str,
-            Doc(
-                """
+            Doc("""
                 Base URI for the OpenAPI specification.
-                """
-            ),
+                """),
         ] = "",
     ) -> "OpenAPI":
         """Creates an `OpenAPI` from a [file object](https://docs.python.org/3/glossary.html#term-file-object).
@@ -542,11 +518,9 @@ class OpenAPI:
         self,
         request: Annotated[
             AnyRequest,
-            Doc(
-                """
+            Doc("""
                 Request object to be validated.
-                """
-            ),
+                """),
         ],
     ) -> None:
         """Validates the given request object.
@@ -567,19 +541,15 @@ class OpenAPI:
         self,
         request: Annotated[
             AnyRequest,
-            Doc(
-                """
+            Doc("""
                 Request object associated with the response.
-                """
-            ),
+                """),
         ],
         response: Annotated[
             Response,
-            Doc(
-                """
+            Doc("""
                 Response object to be validated.
-                """
-            ),
+                """),
         ],
     ) -> None:
         """Validates the given response object associated with the request.
@@ -601,11 +571,9 @@ class OpenAPI:
         self,
         request: Annotated[
             Request,
-            Doc(
-                """
+            Doc("""
                 API call request object to be validated.
-                """
-            ),
+                """),
         ],
     ) -> None:
         if not isinstance(request, Request):
@@ -616,19 +584,15 @@ class OpenAPI:
         self,
         request: Annotated[
             Request,
-            Doc(
-                """
+            Doc("""
                 API call request object associated with the response.
-                """
-            ),
+                """),
         ],
         response: Annotated[
             Response,
-            Doc(
-                """
+            Doc("""
                 API call response object to be validated.
-                """
-            ),
+                """),
         ],
     ) -> None:
         if not isinstance(request, Request):
@@ -641,11 +605,9 @@ class OpenAPI:
         self,
         request: Annotated[
             WebhookRequest,
-            Doc(
-                """
+            Doc("""
                 Webhook request object to be validated.
-                """
-            ),
+                """),
         ],
     ) -> None:
         if not isinstance(request, WebhookRequest):
@@ -656,19 +618,15 @@ class OpenAPI:
         self,
         request: Annotated[
             WebhookRequest,
-            Doc(
-                """
+            Doc("""
                 Webhook request object associated with the response.
-                """
-            ),
+                """),
         ],
         response: Annotated[
             Response,
-            Doc(
-                """
+            Doc("""
                 Webhook response object to be validated.
-                """
-            ),
+                """),
         ],
     ) -> None:
         if not isinstance(request, WebhookRequest):
@@ -681,11 +639,9 @@ class OpenAPI:
         self,
         request: Annotated[
             AnyRequest,
-            Doc(
-                """
+            Doc("""
                 Request object to be unmarshalled.
-                """
-            ),
+                """),
         ],
     ) -> RequestUnmarshalResult:
         """Unmarshals the given request object.
@@ -709,19 +665,15 @@ class OpenAPI:
         self,
         request: Annotated[
             AnyRequest,
-            Doc(
-                """
+            Doc("""
                 Request object associated with the response.
-                """
-            ),
+                """),
         ],
         response: Annotated[
             Response,
-            Doc(
-                """
+            Doc("""
                 Response object to be unmarshalled.
-                """
-            ),
+                """),
         ],
     ) -> ResponseUnmarshalResult:
         """Unmarshals the given response object associated with the request.
@@ -746,11 +698,9 @@ class OpenAPI:
         self,
         request: Annotated[
             Request,
-            Doc(
-                """
+            Doc("""
                 API call request object to be unmarshalled.
-                """
-            ),
+                """),
         ],
     ) -> RequestUnmarshalResult:
         if not isinstance(request, Request):
@@ -761,19 +711,15 @@ class OpenAPI:
         self,
         request: Annotated[
             Request,
-            Doc(
-                """
+            Doc("""
                 API call request object associated with the response.
-                """
-            ),
+                """),
         ],
         response: Annotated[
             Response,
-            Doc(
-                """
+            Doc("""
                 API call response object to be unmarshalled.
-                """
-            ),
+                """),
         ],
     ) -> ResponseUnmarshalResult:
         if not isinstance(request, Request):
@@ -786,11 +732,9 @@ class OpenAPI:
         self,
         request: Annotated[
             WebhookRequest,
-            Doc(
-                """
+            Doc("""
                 Webhook request object to be unmarshalled.
-                """
-            ),
+                """),
         ],
     ) -> RequestUnmarshalResult:
         if not isinstance(request, WebhookRequest):
@@ -801,19 +745,15 @@ class OpenAPI:
         self,
         request: Annotated[
             WebhookRequest,
-            Doc(
-                """
+            Doc("""
                 Webhook request object associated with the response.
-                """
-            ),
+                """),
         ],
         response: Annotated[
             Response,
-            Doc(
-                """
+            Doc("""
                 Webhook response object to be unmarshalled.
-                """
-            ),
+                """),
         ],
     ) -> ResponseUnmarshalResult:
         if not isinstance(request, WebhookRequest):
