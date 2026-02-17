@@ -1,0 +1,66 @@
+name: Integration reusable
+
+on:
+  workflow_call:
+    inputs:
+      integration:
+        description: Integration name under tests/integration/contrib
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    name: "Integration ${{ inputs.integration }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get full Python version
+        id: full-python-version
+        run: echo "version=$(python -c \"import sys; print('-'.join(str(v) for v in sys.version_info))\")" >> "$GITHUB_OUTPUT"
+
+      - name: Set up poetry
+        uses: Gr1N/setup-poetry@v9
+        with:
+          poetry-version: "2.3.1"
+
+      - name: Configure poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Set up cache
+        uses: actions/cache@v5
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Ensure cache is healthy
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: timeout 10s poetry run pip --version || rm -rf .venv
+
+      - name: Install dependencies
+        run: poetry install --all-extras
+
+      - name: Test
+        env:
+          PYTEST_ADDOPTS: "--color=yes"
+        run: poetry run pytest tests/integration/contrib/${{ inputs.integration }}
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5
+        with:
+          flags: integration-${{ inputs.integration }},python-${{ matrix.python-version }}
+          name: integration-${{ inputs.integration }}-python-${{ matrix.python-version }}
