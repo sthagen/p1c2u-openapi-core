@@ -1,7 +1,7 @@
 # Django
 
 This section describes the integration with the [Django](https://www.djangoproject.com) web framework.
-The integration supports Django version 3.0 and above.
+The integration supports Django version 4 and 5.
 
 ## Middleware
 

@@ -38,6 +38,20 @@ and [OpenAPI v3.1](https://github.com/OAI/OpenAPI-Specification/blob/main/versio
 
 Check documentation to see more details about the features. All documentation is in the "docs" directory and online at [openapi-core.readthedocs.io](https://openapi-core.readthedocs.io)
 
+## Integrations compatibility matrix
+
+Supported [Integrations](https://openapi-core.readthedocs.io/en/latest/integrations.html) and it's versions:
+
+| Integration | Version(s) |
+| --- | --- |
+| AIOHTTP | versions 3.8+ and 3.11+ tracks |
+| Django | versions 4 and 5 |
+| Falcon | version 4 |
+| FastAPI | versions 0.11x and 0.12x |
+| Flask | versions 2 and 3 |
+| Requests | default dependency set |
+| Starlette | versions 0.4x and 0.5x |
+| Werkzeug | default dependency set |
 
 ## Installation
 
