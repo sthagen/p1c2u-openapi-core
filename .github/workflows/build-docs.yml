@@ -1,4 +1,4 @@
-name: Build documentation
+name: CI / Docs
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build:
+  docs_build:
+    name: "Build"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -18,7 +19,7 @@ jobs:
 
       - name: Get full Python version
         id: full-python-version
-        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+        run: python -c "import sys; print(f\"version={'-'.join(str(v) for v in sys.version_info)}\")" >> "$GITHUB_OUTPUT"
 
       - name: Set up poetry
         uses: Gr1N/setup-poetry@v9
