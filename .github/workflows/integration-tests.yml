@@ -1,0 +1,111 @@
+name: CI / Integrations
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  integration:
+    name: "Integration / ${{ matrix.target.label }} / py${{ matrix.python-version }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - integration: aiohttp
+            spec: ">=3.8,<4.0"
+            label: "aiohttp-3.x"
+          - integration: aiohttp
+            spec: ">=3.11,<4.0"
+            label: "aiohttp-3.11+"
+          - integration: django
+            spec: ">=4.0,<5.0"
+            label: "django-4.x"
+          - integration: django
+            spec: ">=5.0,<6.0"
+            label: "django-5.x"
+          - integration: falcon
+            spec: ">=4.0,<5.0"
+            label: "falcon-4.x"
+          - integration: fastapi
+            spec: ">=0.111,<0.120"
+            label: "fastapi-0.11x"
+          - integration: fastapi
+            spec: ">=0.120,<0.129"
+            label: "fastapi-0.12x"
+          - integration: flask
+            spec: ">=2.0,<3.0"
+            label: "flask-2.x"
+          - integration: flask
+            spec: ">=3.0,<4.0"
+            label: "flask-3.x"
+          - integration: requests
+            spec: ""
+            label: "requests-default"
+          - integration: starlette
+            spec: ">=0.40.0,<0.50.0"
+            label: "starlette-0.4x"
+          - integration: starlette
+            spec: ">=0.50.0,<0.60.0"
+            label: "starlette-0.5x"
+          - integration: werkzeug
+            spec: ""
+            label: "werkzeug-default"
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get full Python version
+        id: full-python-version
+        run: python -c "import sys; print(f\"version={'-'.join(str(v) for v in sys.version_info)}\")" >> "$GITHUB_OUTPUT"
+
+      - name: Set up poetry
+        uses: Gr1N/setup-poetry@v9
+        with:
+          poetry-version: "2.3.1"
+
+      - name: Configure poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Set up cache
+        uses: actions/cache@v5
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Ensure cache is healthy
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: timeout 10s poetry run pip --version || rm -rf .venv
+
+      - name: Install dependencies
+        run: poetry install --all-extras
+
+      - name: Install framework variant
+        if: matrix.target.spec != ''
+        run: poetry run pip install "${{ matrix.target.integration }}${{ matrix.target.spec }}"
+
+      - name: Test
+        env:
+          PYTEST_ADDOPTS: "--color=yes"
+        run: poetry run pytest tests/integration/contrib/${{ matrix.target.integration }}
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5
+        with:
+          flags: integration,${{ matrix.target.integration }},${{ matrix.target.label }},py${{ matrix.python-version }}
+          name: integration-${{ matrix.target.integration }}-${{ matrix.target.label }}-py${{ matrix.python-version }}
