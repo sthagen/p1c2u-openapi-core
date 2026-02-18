@@ -45,7 +45,7 @@ Supported [Integrations](https://openapi-core.readthedocs.io/en/latest/integrati
 | Integration | Version(s) |
 | --- | --- |
 | [AIOHTTP](https://openapi-core.readthedocs.io/en/latest/integrations/aiohttp/) | versions 3.8+ and 3.11+ tracks |
-| [Django](https://openapi-core.readthedocs.io/en/latest/integrations/django/) | versions 4 and 5 |
+| [Django](https://openapi-core.readthedocs.io/en/latest/integrations/django/) | versions 4, 5, and 6 |
 | [Falcon](https://openapi-core.readthedocs.io/en/latest/integrations/falcon/) | version 4 |
 | [FastAPI](https://openapi-core.readthedocs.io/en/latest/integrations/fastapi/) | versions 0.11x and 0.12x |
 | [Flask](https://openapi-core.readthedocs.io/en/latest/integrations/flask/) | versions 2 and 3 |

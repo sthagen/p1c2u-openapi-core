@@ -5,8 +5,20 @@ name: CI / Core / Tests
 
 on:
   push:
+    paths-ignore:
+      - openapi_core/contrib/**
+      - tests/integration/contrib/**
+      - tests/unit/contrib/**
+      - docs/integrations/**
+      - .github/workflows/contrib-tests.yml
   pull_request:
     types: [opened, synchronize]
+    paths-ignore:
+      - openapi_core/contrib/**
+      - tests/integration/contrib/**
+      - tests/unit/contrib/**
+      - docs/integrations/**
+      - .github/workflows/contrib-tests.yml
 
 permissions:
   contents: read
