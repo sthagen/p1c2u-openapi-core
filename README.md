@@ -40,18 +40,18 @@ Check documentation to see more details about the features. All documentation is
 
 ## Integrations compatibility matrix
 
-Supported [Integrations](https://openapi-core.readthedocs.io/en/latest/integrations.html) and it's versions:
+Supported [Integrations](https://openapi-core.readthedocs.io/en/latest/integrations/) and it's versions:
 
 | Integration | Version(s) |
 | --- | --- |
-| AIOHTTP | versions 3.8+ and 3.11+ tracks |
-| Django | versions 4 and 5 |
-| Falcon | version 4 |
-| FastAPI | versions 0.11x and 0.12x |
-| Flask | versions 2 and 3 |
-| Requests | default dependency set |
-| Starlette | versions 0.4x and 0.5x |
-| Werkzeug | default dependency set |
+| [AIOHTTP](https://openapi-core.readthedocs.io/en/latest/integrations/aiohttp/) | versions 3.8+ and 3.11+ tracks |
+| [Django](https://openapi-core.readthedocs.io/en/latest/integrations/django/) | versions 4 and 5 |
+| [Falcon](https://openapi-core.readthedocs.io/en/latest/integrations/falcon/) | version 4 |
+| [FastAPI](https://openapi-core.readthedocs.io/en/latest/integrations/fastapi/) | versions 0.11x and 0.12x |
+| [Flask](https://openapi-core.readthedocs.io/en/latest/integrations/flask/) | versions 2 and 3 |
+| [Requests](https://openapi-core.readthedocs.io/en/latest/integrations/requests/) | default dependency set |
+| [Starlette](https://openapi-core.readthedocs.io/en/latest/integrations/starlette/) | versions 0.4x and 0.5x |
+| [Werkzeug](https://openapi-core.readthedocs.io/en/latest/integrations/werkzeug/) | default dependency set |
 
 ## Installation
 
@@ -99,11 +99,11 @@ body = result.body
 security = result.security
 ```
 
-The request object should implement the OpenAPI Request protocol. Check [Integrations](https://openapi-core.readthedocs.io/en/latest/integrations.html) to find officially supported implementations.
+The request object should implement the OpenAPI Request protocol. Check [Integrations](https://openapi-core.readthedocs.io/en/latest/integrations/) to find officially supported implementations.
 
-For more details read about the [Unmarshalling](https://openapi-core.readthedocs.io/en/latest/unmarshalling.html) process.
+For more details read about the [Unmarshalling](https://openapi-core.readthedocs.io/en/latest/unmarshalling/) process.
 
-If you just want to validate your request/response data without unmarshalling, read about [Validation](https://openapi-core.readthedocs.io/en/latest/validation.html) instead.
+If you just want to validate your request/response data without unmarshalling, read about [Validation](https://openapi-core.readthedocs.io/en/latest/validation/) instead.
 
 
 ## Related projects
