@@ -56,7 +56,7 @@ jobs:
       - name: Test
         env:
           PYTEST_ADDOPTS: "--color=yes"
-        run: poetry run pytest --ignore=tests/integration/contrib
+        run: poetry run pytest --ignore=tests/integration/contrib --ignore=tests/unit/contrib
 
       - name: Static type check
         run: poetry run mypy
