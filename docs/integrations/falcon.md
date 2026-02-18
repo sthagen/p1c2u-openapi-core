@@ -1,7 +1,7 @@
 # Falcon
 
 This section describes the integration with the [Falcon](https://falconframework.org) web framework.
-The integration supports Falcon version 3.0 and above.
+The integration supports Falcon version 4.
 
 !!! warning
 

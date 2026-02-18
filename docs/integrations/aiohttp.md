@@ -1,6 +1,6 @@
 # aiohttp.web
 
-This section describes integration with [aiohttp.web](https://docs.aiohttp.org/en/stable/web.html) framework.
+This section describes integration with [aiohttp.web](https://docs.aiohttp.org/en/stable/web.html) framework. The integration supports aiohttp version 3.8+.
 
 ## Low level
 

@@ -1,6 +1,6 @@
 # Flask
 
-This section describes integration with the [Flask](https://flask.palletsprojects.com) web framework.
+This section describes integration with the [Flask](https://flask.palletsprojects.com) web framework. The integration supports Flask versions 2 and 3.
 
 ## View decorator
 

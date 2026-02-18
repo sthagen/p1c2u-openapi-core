@@ -71,3 +71,16 @@ pre-commit run --all-files
 ```
 
 Pre-commit check results are also attached to your PR through integration with GitHub Actions.
+
+### Integration compatibility matrix
+
+Contrib integrations are tested in CI against framework version variants and
+Python versions. The matrix source of truth is:
+
+- `.github/workflows/integration-tests.yml`
+
+When changing integration compatibility, update both:
+
+- dependency constraints in `pyproject.toml`
+- integration variants in `.github/workflows/integration-tests.yml`
+- information in `docs/integrations` and `README.md`
