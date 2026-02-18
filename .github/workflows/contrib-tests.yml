@@ -1,4 +1,4 @@
-name: CI / Integrations / Tests
+name: CI / Contrib / Tests
 
 on:
   push:
@@ -14,49 +14,69 @@ permissions:
   id-token: write
 
 jobs:
-  integration_matrix:
+  contrib_matrix:
     name: "${{ matrix.target.label }} / py${{ matrix.python-version }}"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         target:
-          - integration: aiohttp
+          - contrib: aiohttp
+            integration_path: tests/integration/contrib/aiohttp
+            unit_path: tests/unit/contrib/aiohttp
             spec: ">=3.8,<4.0"
             label: "aiohttp-3.x"
-          - integration: aiohttp
+          - contrib: aiohttp
+            integration_path: tests/integration/contrib/aiohttp
+            unit_path: tests/unit/contrib/aiohttp
             spec: ">=3.11,<4.0"
             label: "aiohttp-3.11+"
-          - integration: django
+          - contrib: django
+            integration_path: tests/integration/contrib/django
+            unit_path: tests/unit/contrib/django
             spec: ">=4.0,<5.0"
             label: "django-4.x"
-          - integration: django
+          - contrib: django
+            integration_path: tests/integration/contrib/django
+            unit_path: tests/unit/contrib/django
             spec: ">=5.0,<6.0"
             label: "django-5.x"
-          - integration: falcon
+          - contrib: falcon
+            integration_path: tests/integration/contrib/falcon
             spec: ">=4.0,<5.0"
             label: "falcon-4.x"
-          - integration: fastapi
+          - contrib: fastapi
+            integration_path: tests/integration/contrib/fastapi
             spec: ">=0.111,<0.120"
             label: "fastapi-0.11x"
-          - integration: fastapi
+          - contrib: fastapi
+            integration_path: tests/integration/contrib/fastapi
             spec: ">=0.120,<0.129"
             label: "fastapi-0.12x"
-          - integration: flask
+          - contrib: flask
+            integration_path: tests/integration/contrib/flask
+            unit_path: tests/unit/contrib/flask
             spec: ">=2.0,<3.0"
             label: "flask-2.x"
-          - integration: flask
+          - contrib: flask
+            integration_path: tests/integration/contrib/flask
+            unit_path: tests/unit/contrib/flask
             spec: ">=3.0,<4.0"
             label: "flask-3.x"
-          - integration: requests
+          - contrib: requests
+            integration_path: tests/integration/contrib/requests
+            unit_path: tests/unit/contrib/requests
             spec: ""
             label: "requests-default"
-          - integration: starlette
+          - contrib: starlette
+            integration_path: tests/integration/contrib/starlette
             spec: ">=0.40.0,<0.50.0"
             label: "starlette-0.4x"
-          - integration: starlette
+          - contrib: starlette
+            integration_path: tests/integration/contrib/starlette
             spec: ">=0.50.0,<0.60.0"
             label: "starlette-0.5x"
-          - integration: werkzeug
+          - contrib: werkzeug
+            integration_path: tests/integration/contrib/werkzeug
             spec: ""
             label: "werkzeug-default"
         python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
@@ -97,15 +117,22 @@ jobs:
 
       - name: Install framework variant
         if: matrix.target.spec != ''
-        run: poetry run pip install "${{ matrix.target.integration }}${{ matrix.target.spec }}"
+        run: poetry run pip install "${{ matrix.target.contrib }}${{ matrix.target.spec }}"
 
       - name: Test
+        shell: bash
         env:
           PYTEST_ADDOPTS: "--color=yes"
-        run: poetry run pytest tests/integration/contrib/${{ matrix.target.integration }}
+        run: |
+          paths=("${{ matrix.target.integration_path }}")
+          unit_path="${{ matrix.target.unit_path }}"
+          if [ -d "$unit_path" ]; then
+            paths+=("$unit_path")
+          fi
+          poetry run pytest "${paths[@]}"
 
       - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:
-          flags: integration,${{ matrix.target.integration }},${{ matrix.target.label }},py${{ matrix.python-version }}
-          name: integration-${{ matrix.target.integration }}-${{ matrix.target.label }}-py${{ matrix.python-version }}
+          flags: contrib,${{ matrix.target.contrib }},${{ matrix.target.label }},py${{ matrix.python-version }}
+          name: contrib-${{ matrix.target.contrib }}-${{ matrix.target.label }}-py${{ matrix.python-version }}
