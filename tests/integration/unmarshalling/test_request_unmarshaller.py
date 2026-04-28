@@ -1,5 +1,6 @@
 import json
 from base64 import b64encode
+from email.generator import _make_boundary
 
 import pytest
 
@@ -467,3 +468,79 @@ class TestRequestUnmarshaller:
 
         assert result.errors == []
         assert result.body == {"tags": []}
+
+    @pytest.mark.xfail(
+        reason=(
+            "multipart composed-schema branch selection is not binary-aware"
+        ),
+        strict=True,
+    )
+    def test_request_body_multipart_oneof_binary_field(self):
+        from openapi_core import OpenAPI
+
+        boundary = _make_boundary()
+        spec = OpenAPI.from_dict(
+            {
+                "openapi": "3.1.0",
+                "info": {"version": "0", "title": "test"},
+                "paths": {
+                    "/test": {
+                        "post": {
+                            "requestBody": {
+                                "required": True,
+                                "content": {
+                                    "multipart/form-data": {
+                                        "schema": {
+                                            "oneOf": [
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": ["label"],
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "file": {
+                                                            "type": "string",
+                                                            "format": "binary",
+                                                        }
+                                                    },
+                                                    "required": ["file"],
+                                                },
+                                            ]
+                                        }
+                                    }
+                                },
+                            },
+                            "responses": {"200": {"description": ""}},
+                        }
+                    }
+                },
+            }
+        )
+        data = (
+            (
+                f"--{boundary}\n"
+                "Content-Type: application/octet-stream\n"
+                "MIME-Version: 1.0\n"
+                'Content-Disposition: form-data; name="file"\n\n'
+            ).encode("ascii")
+            + b"\xff\xfe\n"
+            + (f"--{boundary}--\n").encode("ascii")
+        )
+        request = MockRequest(
+            "http://localhost",
+            "post",
+            "/test",
+            content_type=f"multipart/form-data; boundary={boundary}",
+            data=data,
+        )
+
+        result = spec.unmarshal_request(request)
+
+        assert result.errors == []
+        assert result.body == {"file": b"\xff\xfe"}
