@@ -656,3 +656,101 @@ class TestMediaTypeDeserializer:
         result = deserializer.deserialize(value)
 
         assert result == {"tags": []}
+
+    @pytest.mark.xfail(
+        reason=(
+            "multipart composed-schema branch selection is not binary-aware"
+        ),
+        strict=True,
+    )
+    def test_multipart_oneof_binary_field(self, spec, deserializer_factory):
+        mimetype = "multipart/form-data"
+        schema_dict = {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "label": {"type": "string"},
+                    },
+                    "required": ["label"],
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "file": {"type": "string", "format": "binary"},
+                    },
+                    "required": ["file"],
+                },
+            ]
+        }
+        schema = SchemaPath.from_dict(schema_dict)
+        schema_validator = oas31_schema_validators_factory.create(spec, schema)
+        parameters = {
+            "boundary": "===============2872712225071193122==",
+        }
+        deserializer = deserializer_factory(
+            mimetype,
+            schema=schema,
+            schema_validator=schema_validator,
+            parameters=parameters,
+        )
+        value = (
+            b"--===============2872712225071193122==\n"
+            b"Content-Type: application/octet-stream\nMIME-Version: 1.0\n"
+            b'Content-Disposition: form-data; name="file"\n\n\xff\xfe\n'
+            b"--===============2872712225071193122==--\n"
+        )
+
+        result = deserializer.deserialize(value)
+
+        assert result == {
+            "file": b"\xff\xfe",
+        }
+
+    @pytest.mark.xfail(
+        reason=(
+            "multipart composed-schema branch selection is not binary-aware"
+        ),
+        strict=True,
+    )
+    def test_multipart_anyof_binary_field(self, spec, deserializer_factory):
+        mimetype = "multipart/form-data"
+        schema_dict = {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "file": {"type": "string", "format": "binary"},
+                    },
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "label": {"type": "string"},
+                    },
+                },
+            ]
+        }
+        schema = SchemaPath.from_dict(schema_dict)
+        schema_validator = oas31_schema_validators_factory.create(spec, schema)
+        parameters = {
+            "boundary": "===============2872712225071193122==",
+        }
+        deserializer = deserializer_factory(
+            mimetype,
+            schema=schema,
+            schema_validator=schema_validator,
+            parameters=parameters,
+        )
+        value = (
+            b"--===============2872712225071193122==\n"
+            b"Content-Type: application/octet-stream\nMIME-Version: 1.0\n"
+            b'Content-Disposition: form-data; name="file"\n\n\xff\xfe\n'
+            b"--===============2872712225071193122==--\n"
+        )
+
+        result = deserializer.deserialize(value)
+
+        assert result == {
+            "file": b"\xff\xfe",
+        }
